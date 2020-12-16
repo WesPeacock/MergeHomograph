@@ -201,6 +201,9 @@ foreach my $entry ($lifttree->findnodes(q#//entry[@order="2"]#)) {
 	$rthash{$guid}->unbindNode();
 	delete $rthash{$guid};
 
+# delete entry2
+	$rthash{$guid2}->unbindNode();
+	delete $rthash{$guid2};
 
 	say STDERR "==== Done====";
 }
