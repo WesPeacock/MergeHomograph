@@ -179,8 +179,6 @@ foreach my $entry ($lifttree->findnodes(q#//entry[@order="2"]#)) {
 	my ($entry1lexsenseMSAobjsur) = $entry1lexsense->findnodes("./MorphoSyntaxAnalysis/objsur");
 	my $entry1lexsenseMSAobjsurguid = $entry1lexsenseMSAobjsur->getAttribute('guid');
 	my ($entry2lexsenseMSAobjsur) = $entry2lexsense->findnodes("./MorphoSyntaxAnalysis/objsur");
-#save current guid so it can be deleted later
-	my $entry2lexsenseMSAobjsurguid = $entry2lexsenseMSAobjsur->getAttribute('guid');
 	$entry2lexsenseMSAobjsur->setAttribute( 'guid', $entry1lexsenseMSAobjsurguid);
 	#entry2 Lexsense ownerguid & MorphoSyntaxAnalysis/objsur changed
 	#say STDERR $entry2lexsense;
@@ -188,6 +186,21 @@ foreach my $entry ($lifttree->findnodes(q#//entry[@order="2"]#)) {
 	my $entrguid = $entref2->getAttribute( 'guid' );
 	$rthash{$entrguid}->setAttribute( 'ownerguid', $guid1);
 # Entry1 stuff now corrected
+
+# delete entry2's Lexemeform
+	my ($lexemeform) =$rthash{$guid2}->findnodes(qq#./LexemeForm/objsur#);
+	my $guid=$lexemeform->getAttribute('guid');
+	#say STDERR "deleting entry2's Lexemeform $guid   ", $rthash{$guid};
+	$rthash{$guid}->unbindNode();
+	delete $rthash{$guid};
+
+# delete entry2's first MorphoSyntaxAnalyses -- same as it's lexsense MorphoSyntaxAnalysis
+	my ($msa) =$rthash{$guid2}->findnodes(qq#./MorphoSyntaxAnalyses/objsur#);
+	$guid=$msa->getAttribute('guid');
+	#say STDERR "deleting entry2's MorphoSyntaxAnalyses $guid    ", $rthash{$guid};
+	$rthash{$guid}->unbindNode();
+	delete $rthash{$guid};
+
 
 	say STDERR "==== Done====";
 }
