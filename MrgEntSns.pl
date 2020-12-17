@@ -208,6 +208,41 @@ foreach my $entry ($lifttree->findnodes(q#//entry[@order="2"]#)) {
 
 	say LOGFILE qq("${form}" homograph 1 & 2 merged.);
 
+	# Compare the two entries in the LIFT file, flag error and quit if:
+	# one gloss is missing and the other is there or if they are not the same
+	# one definition is missing and the other is there or if they are not the same
+	# if the sense in either has a field other than a gloss or definition
+	if (1) { # just to group this error checking
+	my ($gloss1) = $enthash{$form . "1"}->findnodes(q#./sense/gloss/text/text()#);
+	my ($gloss2) = $enthash{$form . "2"}->findnodes(q#./sense/gloss/text/text()#);
+	if (!$gloss1 && $gloss2) {
+		say LOGFILE "$form missing gloss in homograph 1";
+		next;
+		}
+	if ($gloss1 && !$gloss2) {
+		say LOGFILE "$form missing gloss in homograph 2";
+		next;
+		}
+	if ($gloss1 ne $gloss2) {
+		say LOGFILE "$form homograph glosses different";
+		next;
+		}
+	my ($definition1) = $enthash{$form . "1"}->findnodes(q#./sense/definition/form/text/text()#);
+	my ($definition2) = $enthash{$form . "2"}->findnodes(q#./sense/definition/form/text/text()#);
+	if (!$definition1 && $definition2) {
+		say LOGFILE "$form missing definition in homograph 1";
+		next;
+		}
+	if ($definition1 && !$definition2) {
+		say LOGFILE "$form missing definition in homograph 2";
+		next;
+		}
+	if ($definition1 ne $definition2) {
+		say LOGFILE "$form homograph definitions different";
+		next;
+		}
+	}
+
 	say STDERR "==== Done====";
 }
 
