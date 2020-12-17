@@ -79,6 +79,7 @@ foreach my $entry ($lifttree->findnodes(q#//entry[@order="2"]#)) {
 		say LOGFILE qq#"${form}2" doesn't have single sense. Won't process.#;
 		next;
 		}
+
 	if ($enthash{$form . "1"}->findvalue(q#count(.//relation[@type="_component-lexeme"])#) != 1) {
 		say LOGFILE qq("${form}1" doesn't have single component.  Won't process.);
 		next;
@@ -164,7 +165,7 @@ foreach my $entry ($lifttree->findnodes(q#//entry[@order="2"]#)) {
 	$text =~ s/\r*\n//g;
 	$newnode = XML::LibXML->load_xml(string => $text)->findnodes('//*')->[0];
 	$entry1sense->addSibling($newnode);
-	say STDERR $rthash{$guid1};
+	#say STDERR $rthash{$guid1};
 # finished changing entry1 itself
 
 #change lexsense2
@@ -204,6 +205,8 @@ foreach my $entry ($lifttree->findnodes(q#//entry[@order="2"]#)) {
 # delete entry2
 	$rthash{$guid2}->unbindNode();
 	delete $rthash{$guid2};
+
+	say LOGFILE qq("${form}" homograph 1 & 2 merged.);
 
 	say STDERR "==== Done====";
 }
