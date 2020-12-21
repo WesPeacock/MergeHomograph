@@ -221,7 +221,6 @@ foreach my $entry ($lifttree->findnodes(q#//entry[@order="2"]#)) {
 	delete $rthash{$guid2};
 
 	say LOGFILE qq("${form}" homograph 1 & 2 merged.);
-
 # Delete duplicate sense (but only if simple --i.e. with nothing but definition)
 	if ($enthash{$form . "1"}->findvalue(q#count(./sense/*)#) == 1) {
 		my ($sensenode) = $enthash{$form . "1"}->findnodes(q#./sense#);
@@ -246,6 +245,24 @@ foreach my $entry ($lifttree->findnodes(q#//entry[@order="2"]#)) {
 	else {
 		say LOGFILE "\"$form\" no simple sense found";
 		};
+
+	# Merge the two Complex forms in the main entry
+	my @EntryRefs = $rthash{$guid1}->findnodes(q#./EntryRefs/objsur#);
+	my $Component1guid= $EntryRefs[0]->getAttribute('guid');
+	my $Component2guid= $EntryRefs[1]->getAttribute('guid');
+	# add ComponentLexeme2 after ComponentLexeme1
+	my ($ComponentLexeme1node) = ($rthash{$Component1guid})->findnodes(q#./ComponentLexemes/objsur#);
+	# say STDERR "componentLex1 grandparent before", $ComponentLexeme1node->parentNode->parentNode;
+	my ($ComponentLexeme2node) = ($rthash{$Component2guid})->findnodes(q#./ComponentLexemes/objsur#);
+	$newnode=$ComponentLexeme2node->cloneNode(1);
+	$ComponentLexeme1node->parentNode->insertAfter( $newnode, $ComponentLexeme1node);
+
+	# add it to the ShowComplexFormsIn as well
+	my ($ShowComplexFormsInnode) = ($rthash{$Component1guid})->findnodes(q#./ShowComplexFormsIn/objsur#);
+	$newnode=$ComponentLexeme2node->cloneNode(1);
+	$ShowComplexFormsInnode->parentNode->insertAfter( $newnode, $ShowComplexFormsInnode);
+	# say STDERR "componentLex1 grandparent after", $ComponentLexeme1node->parentNode->parentNode;
+
 
 	say STDERR "==== Done====";
 	}
