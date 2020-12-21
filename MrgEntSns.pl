@@ -38,6 +38,8 @@ my $outfilename = $config->{"$inisection"}->{FwdataOut};
 my $liftfilename = $config->{"$inisection"}->{liftfilename};
 open(LOGFILE, '>:encoding(UTF-8)', $config->{"$inisection"}->{logfilename});
 say STDERR "Log file: ", $config->{"$inisection"}->{logfilename};
+open(ERRFILE, '>:encoding(UTF-8)', $config->{"$inisection"}->{errorlogfilename});
+say STDERR "Error Log file: ", $config->{"$inisection"}->{errorlogfilename};
 
 say STDERR "Reading fwdata file: $infilename";
 my $fwdatatree = XML::LibXML->load_xml(location => $infilename);
@@ -64,48 +66,48 @@ say STDERR "$size Lift entries";
 foreach my $entry ($lifttree->findnodes(q#//entry[@order="2"]#)) {
 	my ($form) = split(/2_/,$entry->getAttribute('id'));
 	if (exists $enthash{$form . "3"}) {
-		say LOGFILE qq("${form}3" exists.  Won't process.);
+		say ERRFILE qq("${form}3" exists.  Won't process.);
 		next;
 		}
 	if (!exists $enthash{$form . "1"}) {
-		say LOGFILE qq("${form}1" does not exist.  Won't process.);
+		say ERRFILE qq("${form}1" does not exist.  Won't process.);
 		next;
 		}
 	if ($enthash{$form . "1"}->findvalue(q#count(.//sense)#) != 1) {
-		say LOGFILE qq#"${form}1" doesn't have single sense.  Won't process.#;
+		say ERRFILE qq#"${form}1" doesn't have single sense.  Won't process.#;
 		next;
 	}
 	if ($enthash{$form . "2"}->findvalue(q#count(.//sense)#) != 1) {
-		say LOGFILE qq#"${form}2" doesn't have single sense. Won't process.#;
+		say ERRFILE qq#"${form}2" doesn't have single sense. Won't process.#;
 		next;
 		}
 
 	if ($enthash{$form . "1"}->findvalue(q#count(.//relation[@type="_component-lexeme"])#) != 1) {
-		say LOGFILE qq("${form}1" doesn't have single component.  Won't process.);
+		say ERRFILE qq("${form}1" doesn't have single component.  Won't process.);
 		next;
 		}
 	if ($enthash{$form . "2"}->findvalue(q#count(.//relation[@type="_component-lexeme"])#) != 1) {
-		say LOGFILE qq("${form}2" doesn't have single component.  Won't process.);
+		say ERRFILE qq("${form}2" doesn't have single component.  Won't process.);
 		next;
 		}
 
 	if ($enthash{$form . "1"}->findnodes(q#./field[@type="import-residue"]#)) {
-		say LOGFILE qq("${form}1" has an entry level Import Residue.  Won't process.);
+		say ERRFILE qq("${form}1" has an entry level Import Residue.  Won't process.);
 		next;
 		}
 
 	if ($enthash{$form . "2"}->findnodes(q#./field[@type="import-residue"]#)) {
-		say LOGFILE qq("${form}2" has an entry level Import Residue.  Won't process.);
+		say ERRFILE qq("${form}2" has an entry level Import Residue.  Won't process.);
 		next;
 		}
 
 	if ($enthash{$form . "1"}->findnodes(q#./sense/field[@type="import-residue"]#)) {
-		say LOGFILE qq("${form}1" has a sense level Import Residue.  Won't process.);
+		say ERRFILE qq("${form}1" has a sense level Import Residue.  Won't process.);
 		next;
 		}
 
 	if ($enthash{$form . "2"}->findnodes(q#./sense/field[@type="import-residue"]#)) {
-		say LOGFILE qq("${form}2" has a sense level Import Residue.  Won't process.);
+		say ERRFILE qq("${form}2" has a sense level Import Residue.  Won't process.);
 		next;
 		}
 
