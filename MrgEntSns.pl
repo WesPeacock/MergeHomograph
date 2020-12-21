@@ -113,8 +113,8 @@ foreach my $entry ($lifttree->findnodes(q#//entry[@order="2"]#)) {
 
 	my $guid1 = ($enthash{$form . "1"})->getAttribute('guid');
 	my $guid2 = ($enthash{$form . "2"})->getAttribute('guid');
-	next if !($guid1 =~ /465372c6/);
-	say STDERR "found 465372c6";
+	next if !($guid1 =~ /(465372c6|fdd5d56a)/);
+	say STDERR "found $MATCH";
 	say STDERR "guid1 $guid1";
 	say STDERR "guid2 $guid2";
 =pod
