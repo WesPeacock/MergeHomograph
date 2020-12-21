@@ -125,6 +125,18 @@ foreach my $entry ($lifttree->findnodes(q#//entry[@order="2"]#)) {
 	say $rthash{$guid2};
 	say "==== Working====";
 =cut
+	my ($definition1) = $enthash{$form . "1"}->findnodes(q#./sense/definition/form/text/text()#);
+	my ($definition2) = $enthash{$form . "2"}->findnodes(q#./sense/definition/form/text/text()#);
+	if (!$definition1 ||  !$definition2) {
+		say ERRFILE "$form missing definition in homograph 1. Won't process." if !$definition1;
+		say ERRFILE "$form missing definition in homograph 2. Won't process." if !$definition2;
+		next;
+		}
+	if ($definition1 ne  $definition2) {
+		say ERRFILE "$form definitions differ in homographs 1 and 2. Won't process.";
+		next;
+		}
+
 	my ($hmnode) = $rthash{$guid1}->findnodes(qq#./HomographNumber#);
 	$hmnode->setAttribute( "val", 0 );
 #	say STDERR $hmnode;
