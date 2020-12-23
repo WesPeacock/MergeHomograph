@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 my $USAGE = "Usage: $0 [--inifile inifile.ini] [--section section] [--debug] [file.sfm]";
-# perl ./MrgEntSns.pl
+# perl ./mrghmpair.pl
 use 5.026;
 use strict;
 use warnings;
@@ -15,7 +15,7 @@ use XML::LibXML;
 
 use Getopt::Long;
 GetOptions (
-	'inifile:s'   => \(my $inifilename = "MrgEntSns.ini"), # ini filename
+	'inifile:s'   => \(my $inifilename = "mrghmpair.ini"), # ini filename
 	'section:s'   => \(my $inisection = "MergeEntrySense"), # section of ini file to use
 	'debug'       => \my $debug,
 	) or die $USAGE;
