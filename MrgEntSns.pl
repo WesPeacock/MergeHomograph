@@ -263,6 +263,12 @@ foreach my $entry ($lifttree->findnodes(q#//entry[@order="2"]#)) {
 	$ShowComplexFormsInnode->parentNode->insertAfter( $newnode, $ShowComplexFormsInnode);
 	# say STDERR "componentLex1 grandparent after", $ComponentLexeme1node->parentNode->parentNode;
 
+	# Remove The second Complex forms cluster
+	# Remove pointer to second EntryRef  from the list of EntryRefs in the LexEntry
+	$EntryRefs[1]->unbindNode();
+# delete its rt
+	$rthash{$Component2guid}->unbindNode();
+	delete $rthash{$Component2guid};
 
 	say STDERR "==== Done====";
 	}
