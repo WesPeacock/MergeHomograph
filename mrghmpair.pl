@@ -1,6 +1,9 @@
 #!/usr/bin/perl
 my $USAGE = "Usage: $0 [--inifile inifile.ini] [--section section] [--debug] [file.sfm]";
 # perl ./mrghmpair.pl
+# This script merges homograph pairs that have identical definitions
+# If the sense of one of the pairs is simple (only definition; no other fields) that sense will be deleted
+# The two complex form entries will be merged into a single one with two components, one from each
 use 5.026;
 use strict;
 use warnings;
@@ -114,7 +117,7 @@ foreach my $entry ($lifttree->findnodes(q#//entry[@order="2"]#)) {
 	my $guid1 = ($enthash{$form . "1"})->getAttribute('guid');
 	my $guid2 = ($enthash{$form . "2"})->getAttribute('guid');
 	next if !($guid1 =~ /(465372c6|fdd5d56a)/);
-	say STDERR "found $MATCH";
+	say STDERR "found $form ($MATCH)";
 	say STDERR "guid1 $guid1";
 	say STDERR "guid2 $guid2";
 =pod
