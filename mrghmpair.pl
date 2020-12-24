@@ -116,10 +116,10 @@ foreach my $entry ($lifttree->findnodes(q#//entry[@order="2"]#)) {
 
 	my $guid1 = ($enthash{$form . "1"})->getAttribute('guid');
 	my $guid2 = ($enthash{$form . "2"})->getAttribute('guid');
-	next if !($guid1 =~ /(465372c6|fdd5d56a)/);
-	say STDERR "found $form ($MATCH)";
-	say STDERR "guid1 $guid1";
-	say STDERR "guid2 $guid2";
+	next if ($debug && !($guid1 =~ /(465372c6|fdd5d56a)/));
+	say STDERR "found $form ($MATCH)" if $debug;
+	say STDERR "guid1 $guid1" if $debug;
+	say STDERR "guid2 $guid2" if $debug;
 =pod
 	my ($x) = $entry->findnodes("./form/test/text()");
 	say "x:$x";
@@ -273,7 +273,7 @@ foreach my $entry ($lifttree->findnodes(q#//entry[@order="2"]#)) {
 	$rthash{$Component2guid}->unbindNode();
 	delete $rthash{$Component2guid};
 
-	say STDERR "==== Done====";
+	say STDERR "==== Done====" if $debug;
 	}
 
 my $xmlstring = $fwdatatree->toString;
