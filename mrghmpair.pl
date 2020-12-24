@@ -136,7 +136,7 @@ foreach my $entry ($lifttree->findnodes(q#//entry[@order="2"]#)) {
 		next;
 		}
 	if ($definition1 ne  $definition2) {
-		say ERRFILE "$form definitions differ in homographs 1 and 2. Won't process.";
+		say ERRFILE "$form  Won't process. Definitions differ:\n\t1-\"$definition1\"\n\t2-\"$definition2\"";
 		next;
 		}
 
