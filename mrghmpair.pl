@@ -225,7 +225,7 @@ foreach my $entry ($lifttree->findnodes(q#//entry[@order="2"]#)) {
 
 	say LOGFILE qq("${form}" homograph 1 & 2 merged.);
 # Delete duplicate sense (but only if simple --i.e. with nothing but definition)
-	if ($enthash{$form . "1"}->findvalue(q#count(./sense/*)#) == 1) {
+	if ($enthash{$form . "1"}->findvalue(q#count(./sense/*)#) == 1) { #definition and nothing else
 		my ($sensenode) = $enthash{$form . "1"}->findnodes(q#./sense#);
 		my $senseguid = $sensenode->getAttribute('id');
 		my $entryguid = $rthash{$senseguid}->getAttribute('ownerguid');
@@ -235,7 +235,7 @@ foreach my $entry ($lifttree->findnodes(q#//entry[@order="2"]#)) {
 		delete $rthash{$senseguid};
 		say LOGFILE "${form}1  sense deleted from merged record";
 		}
-	elsif ($enthash{$form . "2"}->findvalue(q#count(./sense/*)#) == 1) {
+	elsif ($enthash{$form . "2"}->findvalue(q#count(./sense/*)#) == 1) { #definition and nothing else
 		my ($sensenode) = $enthash{$form . "2"}->findnodes(q#./sense#);
 		my $senseguid = $sensenode->getAttribute('id');
 		my $entryguid = $rthash{$senseguid}->getAttribute('ownerguid');
