@@ -37,7 +37,23 @@ Before running the script you have to:
 
 #### Possible Future Enhancements
 
-* Currently ignores homograph sets that have more than two homographs.
+##### "Force" mode using a flag field
+
+* The script currently ignores homograph sets that have more than two homographs or where definitions differ. Here's a scheme for a "force" mode that has a more nuanced approach.  Note that the two modes are not  mutually exclusive. You could run the basic mode to catch most of the merges and then the "force" mode to handle the residue.
+
+  * ```
+    You'd use the Bulk Edit Click Copy feature to set a flag field.
+
+    There's a sample screenshot below. It shows the project filtered by a regular expression on the homograph number and selecting complex forms that have a component. For the entries to be merged the user has click-copied the homograph numbers into the flag field. The user has added an asterisk to one of the flag fields to indicate that it has the definition that will be used for the merged entry.
+
+    Create the LIFT file by filtering on the flag field before export. The resulting LIFT file would have just the entries to be merged. The "force" mode would read the LIFT file for the homographs and use the starred entry for the definition for the merged entry. In the Click-copy bulk edit, if you change the Target Field to the definition, you can edit the definition on the fly as well.
+
+    This enhancement would make selecting the entries fairly quick, but still under the control of a human editor.
+    ```
+
+  * ![Click Copy Example](ClickCopyExample.png?raw=true "Click Copy Example")
+
+  ##### Fuzzy comparison
 
 * Could do some sort of "fuzzy" comparison on definition that ignores some punctuation.
 
